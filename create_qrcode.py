@@ -1,11 +1,13 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter import filedialog
 import pyqrcode
 import validators
+import time
 
 
 # Limit url length
-url_max_len = 50
+url_max_len = 250
 
 # Create new tkinter object
 ws = Tk()
@@ -53,6 +55,13 @@ def limit_url_len(*args):
         user_input.set(value[:url_max_len])
         messagebox.showwarning('warning', 'Max url length is ' + str(url_max_len))
 
+def savefile():
+    qr.svg('qr_code_' + str(time.time()) + '.svg')
+    # filename = filedialog.asksaveasfile(mode='w', defaultextension=".jpg")
+    # if not filename:
+    #     return
+    # edge.save(filename)
+
 lbl = Label(
     ws,
     text="Enter message or URL",
@@ -83,6 +92,9 @@ button = Button(
     width=15,
     command=clear_QR
 )
+button.pack(pady=10)
+
+button = Button(ws, text="save as", command=savefile)
 button.pack(pady=10)
 
 img_lbl = Label(
