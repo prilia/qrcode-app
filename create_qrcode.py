@@ -13,6 +13,10 @@ url_max_len = 250
 geometry_val = '800x800'
 # Color to use
 color_bg = 'white'
+
+GENERATE_QR_TXT = 'Generate QR'
+SAVE_TO_FILE_TXT = 'Save To File'
+CLEAR_TXT = 'Clear It'
 ###############################################
 
 # Create new tkinter object
@@ -35,21 +39,27 @@ def generate_QR():
     if len(url) == 0:
         messagebox.showwarning('warning', 'All Fields are Required!')
     elif validators.domain(url) or validators.url(url):
-        global qr, img
-        qr = pyqrcode.create(user_input.get(), error=error_level.get())
-        img = BitmapImage(data=qr.xbm(scale=8))
+        try:
+            global qr, img
+            qr = pyqrcode.create(user_input.get(), error=error_level.get())
+            img = BitmapImage(data=qr.xbm(scale=8))
+            save_button_change_state(NORMAL)
+            display_code()
+        except:
+            pass
     else:
         messagebox.showwarning('warning', 'Not Valid URL!')
 
-    try:
-        display_code()
-    except:
-        pass
+
+
+def save_button_change_state(st):
+    button_save_to_file["state"] = st
 
 def clear_QR():
     img_lbl.config(image='')
     user_input.set('')
     output.config(text='')
+    save_button_change_state(DISABLED)
 
 def display_code():
     img_lbl.config(image=img)
@@ -62,11 +72,13 @@ def limit_url_len(*args):
         messagebox.showwarning('warning', 'Max url length is ' + str(url_max_len))
 
 def savefile():
-    qr.svg('qr_code_' + str(time.time()) + '.svg')
-    # filename = filedialog.asksaveasfile(mode='w', defaultextension=".jpg")
-    # if not filename:
-    #     return
-    # edge.save(filename)
+    try:
+        filename = 'qr_code_' + str(time.time()) + '.svg'
+        qr.svg(filename)
+        messagebox.showinfo('info', 'QR code saved to file ' + str(filename))
+    except:
+        pass
+
 
 lbl = Label(
     ws,
@@ -86,7 +98,7 @@ entry.pack(padx=5)
 
 button = Button(
     ws,
-    text="generate_QR",
+    text=GENERATE_QR_TXT,
     width=15,
     command=generate_QR
 )
@@ -94,14 +106,15 @@ button.pack(pady=5)
 
 button = Button(
     ws,
-    text="Clear",
+    text=CLEAR_TXT,
     width=15,
     command=clear_QR
 )
 button.pack(pady=10)
 
-button = Button(ws, text="save as", command=savefile)
-button.pack(pady=10)
+button_save_to_file = Button(ws, text=SAVE_TO_FILE_TXT, command=savefile)
+button_save_to_file.pack(pady=10)
+save_button_change_state(DISABLED)
 
 img_lbl = Label(
     ws,
