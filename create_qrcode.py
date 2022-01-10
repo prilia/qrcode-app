@@ -40,6 +40,7 @@ def generate_QR():
 
 def clear_QR():
     img_lbl.config(image='')
+    user_input.set('')
     output.config(text='')
 
 def display_code():
