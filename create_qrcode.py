@@ -5,23 +5,29 @@ import pyqrcode
 import validators
 import time
 
-
+###############################################
+# Constants
 # Limit url length
 url_max_len = 250
+# Window frame H,W
+geometry_val = '800x800'
+# Color to use
+color_bg = 'white'
+###############################################
 
 # Create new tkinter object
 ws = Tk()
 ws.title("Create QR-code Naya-DS-Course")
-ws.geometry('800x800')
-ws.config(bg='white')
+ws.geometry(geometry_val)
+ws.config(bg=color_bg)
 
 # Define error level
 error_level = StringVar()
-Label(ws, text="Choose error correction level", bg='white').pack()
-Radiobutton(ws, text="L - 7%", bg='white', variable=error_level, value='L', state=NORMAL).pack()
-Radiobutton(ws, text="M - 15%", bg='white', variable=error_level, value='M').pack()
-Radiobutton(ws, text="Q - 25%", bg='white', variable=error_level, value='Q').pack()
-Radiobutton(ws, text="H - 30%", bg='white', variable=error_level, value='H').pack()
+Label(ws, text="Choose error correction level", bg=color_bg).pack()
+Radiobutton(ws, text="L - 7%", bg=color_bg, variable=error_level, value='L', state=NORMAL).pack()
+Radiobutton(ws, text="M - 15%", bg=color_bg, variable=error_level, value='M').pack()
+Radiobutton(ws, text="Q - 25%", bg=color_bg, variable=error_level, value='Q').pack()
+Radiobutton(ws, text="H - 30%", bg=color_bg, variable=error_level, value='H').pack()
 error_level.set('L')
 
 def generate_QR():
@@ -65,7 +71,7 @@ def savefile():
 lbl = Label(
     ws,
     text="Enter message or URL",
-    bg='white'
+    bg=color_bg
 )
 lbl.pack()
 
@@ -99,14 +105,14 @@ button.pack(pady=10)
 
 img_lbl = Label(
     ws,
-    bg='white'
+    bg=color_bg
 )
 img_lbl.pack()
 
 output = Label(
     ws,
     text="",
-    bg='white'
+    bg=color_bg
 )
 output.pack()
 
