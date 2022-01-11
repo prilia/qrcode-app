@@ -16,7 +16,7 @@ GEOMETRY_VAL = '800x800'
 # Color to use
 COLOR_BG = 'white'
 # Color to use
-SAVE_TO_FOLDER = '/qrcode-files/'
+SAVE_TO_FOLDER = ".\\qrcode-files\\"
 
 GENERATE_QR_TXT = 'Generate QR'
 SAVE_TO_FILE_TXT = 'Save To File'
