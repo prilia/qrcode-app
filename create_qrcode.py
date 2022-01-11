@@ -4,35 +4,24 @@ from tkinter import filedialog
 import pyqrcode
 import validators
 import time
+import traceback
+from pathlib import Path
 
 ###############################################
 # Constants
 # Limit url length
-url_max_len = 250
+URL_MAX_LEN = 250
 # Window frame H,W
-geometry_val = '800x800'
+GEOMETRY_VAL = '800x800'
 # Color to use
-color_bg = 'white'
+COLOR_BG = 'white'
+# Color to use
+SAVE_TO_FOLDER = '/qrcode-files/'
 
 GENERATE_QR_TXT = 'Generate QR'
 SAVE_TO_FILE_TXT = 'Save To File'
 CLEAR_TXT = 'Clear It'
 ###############################################
-
-# Create new tkinter object
-ws = Tk()
-ws.title("Create QR-code Naya-DS-Course")
-ws.geometry(geometry_val)
-ws.config(bg=color_bg)
-
-# Define error level
-error_level = StringVar()
-Label(ws, text="Choose error correction level", bg=color_bg).pack()
-Radiobutton(ws, text="L - 7%", bg=color_bg, variable=error_level, value='L', state=NORMAL).pack()
-Radiobutton(ws, text="M - 15%", bg=color_bg, variable=error_level, value='M').pack()
-Radiobutton(ws, text="Q - 25%", bg=color_bg, variable=error_level, value='Q').pack()
-Radiobutton(ws, text="H - 30%", bg=color_bg, variable=error_level, value='H').pack()
-error_level.set('L')
 
 def generate_QR():
     url = user_input.get()
@@ -50,8 +39,6 @@ def generate_QR():
     else:
         messagebox.showwarning('warning', 'Not Valid URL!')
 
-
-
 def save_button_change_state(st):
     button_save_to_file["state"] = st
 
@@ -67,23 +54,39 @@ def display_code():
 
 def limit_url_len(*args):
     value = user_input.get()
-    if len(value) > url_max_len:
-        user_input.set(value[:url_max_len])
-        messagebox.showwarning('warning', 'Max url length is ' + str(url_max_len))
+    if len(value) > URL_MAX_LEN:
+        user_input.set(value[:URL_MAX_LEN])
+        messagebox.showwarning('warning', 'Max url length is ' + str(URL_MAX_LEN))
 
 def savefile():
     try:
-        filename = 'qr_code_' + str(time.time()) + '.svg'
+        Path(SAVE_TO_FOLDER).mkdir(parents=True, exist_ok=True)
+        filename = SAVE_TO_FOLDER + 'qr_code_' + str(time.time()) + '.svg'
         qr.svg(filename)
         messagebox.showinfo('info', 'QR code saved to file ' + str(filename))
-    except:
-        pass
+    except Exception:
+        traceback.print_exc()
 
+
+# Create new tkinter object
+ws = Tk()
+ws.title("Create QR-code Naya-DS-Course")
+ws.geometry(GEOMETRY_VAL)
+ws.config(bg=COLOR_BG)
+
+# Define error level
+error_level = StringVar()
+Label(ws, text="Choose error correction level", bg=COLOR_BG).pack()
+Radiobutton(ws, text="L - 7%", bg=COLOR_BG, variable=error_level, value='L', state=NORMAL).pack()
+Radiobutton(ws, text="M - 15%", bg=COLOR_BG, variable=error_level, value='M').pack()
+Radiobutton(ws, text="Q - 25%", bg=COLOR_BG, variable=error_level, value='Q').pack()
+Radiobutton(ws, text="H - 30%", bg=COLOR_BG, variable=error_level, value='H').pack()
+error_level.set('L')
 
 lbl = Label(
     ws,
     text="Enter message or URL",
-    bg=color_bg
+    bg=COLOR_BG
 )
 lbl.pack()
 
@@ -118,14 +121,14 @@ save_button_change_state(DISABLED)
 
 img_lbl = Label(
     ws,
-    bg=color_bg
+    bg=COLOR_BG
 )
 img_lbl.pack()
 
 output = Label(
     ws,
     text="",
-    bg=color_bg
+    bg=COLOR_BG
 )
 output.pack()
 
