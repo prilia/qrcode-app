@@ -23,6 +23,8 @@ SAVE_TO_FILE_TXT = 'Save To File'
 CLEAR_TXT = 'Clear It'
 ###############################################
 
+###############################################
+# Functions
 def generate_QR():
     url = user_input.get()
     if len(url) == 0:
@@ -67,7 +69,7 @@ def savefile():
     except Exception:
         traceback.print_exc()
 
-
+###############################################
 # Create new tkinter object
 ws = Tk()
 ws.title("Create QR-code Naya-DS-Course")
